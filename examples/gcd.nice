@@ -1,0 +1,7 @@
+routine gcd(a : integer, b : integer) : integer
+is
+    if a == 0 then
+        return b;
+    end
+    return gcd(b % a, a);
+end

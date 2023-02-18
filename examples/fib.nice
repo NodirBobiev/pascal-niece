@@ -1,0 +1,19 @@
+routine fib(nth : integer) : integer 
+is
+    if nth < 2 then
+        return 1;
+    end
+
+    var a is 1;
+    var b is 1;
+    var kth is 1;
+
+    while kth < nth loop
+        var x is a + b;
+        a := b;
+        b := x;
+        kth := kth + 1;
+    end
+
+    return b;
+end
