@@ -49,63 +49,73 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INVALID_CHARACTER = 258,
-    INTEGER = 259,
-    REAL = 260,
-    RETURN = 261,
-    THEN = 262,
-    SEMICOLON = 263,
-    NEWLINE = 264,
-    INTEGER_LITERAL = 265,
-    BOOLEAN_LITERAL = 266,
-    REAL_LITERAL = 267,
-    IDENTIFIER = 268,
-    BOOLEAN = 269,
-    RANGE = 270,
-    WHILE = 271,
-    FOR = 272,
-    IF = 273,
-    ELSE = 274,
-    VAR = 275,
-    TYPE = 276,
-    ROUTINE = 277,
-    END = 278,
-    RECORD = 279,
-    ARRAY = 280,
-    IN = 281,
-    REVERSE = 282,
-    LOOP = 283,
-    IS = 284,
-    AND = 285,
-    OR = 286,
-    XOR = 287,
-    NOT = 288,
-    ASSIGN = 289,
-    COLON = 290,
-    COMMA = 291,
-    DOT = 292,
-    LBRACKET = 293,
-    RBRACKET = 294,
-    LPAREN = 295,
-    RPAREN = 296,
-    EQUALS = 297,
-    EQUAL = 298,
-    NOT_EQUAL = 299,
-    LESS_THAN = 300,
-    LESS_THAN_EQUAL = 301,
-    GREATER_THAN = 302,
-    GREATER_THAN_EQUAL = 303,
-    PLUS = 304,
-    MINUS = 305,
-    MULTIPLY = 306,
-    DIVIDE = 307,
-    MODULO = 308
+    RETURN = 258,
+    VAR = 259,
+    TYPE = 260,
+    IS = 261,
+    ROUTINE = 262,
+    END = 263,
+    BOOL_LITERAL = 264,
+    INTEGER = 265,
+    REAL = 266,
+    BOOLEAN = 267,
+    RECORD = 268,
+    ARRAY = 269,
+    IN = 270,
+    REVERSE = 271,
+    LOOP = 272,
+    FOR = 273,
+    WHILE = 274,
+    IF = 275,
+    THEN = 276,
+    ELSE = 277,
+    AND = 278,
+    OR = 279,
+    XOR = 280,
+    NOT = 281,
+    IDENTIFIER = 282,
+    INTEGER_LITERAL = 283,
+    REAL_LITERAL = 284,
+    STRING_LITERAL = 285,
+    RANGE = 286,
+    COMMA = 287,
+    COLON = 288,
+    SEMICOLON = 289,
+    LPAREN = 290,
+    RPAREN = 291,
+    LBRACKET = 292,
+    RBRACKET = 293,
+    ASSIGN = 294,
+    EQUALS = 295,
+    NOT_EQUAL = 296,
+    LESS_THAN = 297,
+    LESS_THAN_EQUAL = 298,
+    GREATER_THAN = 299,
+    GREATER_THAN_EQUAL = 300,
+    MULTIPLY = 301,
+    DIVIDE = 302,
+    MODULO = 303,
+    INVALID_CHARACTER = 304,
+    BOOLEAN_LITERAL = 305,
+    PLUS = 306,
+    MINUS = 307,
+    DOT = 308
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 39 "parser.y"
+
+    struct ASTNode* node;
+    char* value;
+
+#line 116 "parser.hpp"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

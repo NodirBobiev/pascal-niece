@@ -1,7 +1,7 @@
 routine fib(nth : integer) : integer 
 is
     if nth < 2 then
-        return 1;
+        return 1
     end
 
     var a is 1;
@@ -10,10 +10,10 @@ is
 
     while kth < nth loop
         var x is a + b;
-        a := b;
-        b := x;
-        kth := kth + 1;
+        a := b
+        b := x
+        kth := kth + 1
     end
 
-    return b;
+    return b
 end

@@ -2,6 +2,9 @@
 #include <string>
 #include <cctype>
 #include <fstream>
+
+
+
 using namespace std;
 
 enum TokenType {
@@ -305,6 +308,3 @@ int main() {
     } while (token.type != END_OF_FILE);
     return 0;
 }
-
-
-
