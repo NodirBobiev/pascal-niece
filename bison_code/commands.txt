@@ -1,0 +1,11 @@
+flex -o lexer.h lexer.l
+bison -d parser.y
+gcc -o program parser.tab.c lexer.h -lfl
+
+OR DO THIS
+flex -o lexer.h lexer.l && bison -d parser.y && gcc -o program parser.tab.c lexer.h -lfl
+
+
+bison -d parser.y 
+flex lexer.l
+g++ -o my_parser parser.tab.c lex.yy.c

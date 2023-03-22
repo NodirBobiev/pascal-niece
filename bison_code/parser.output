@@ -1,0 +1,2457 @@
+Terminals unused in grammar
+
+    INVALID_CHARACTER
+    NEWLINE
+    EQUAL
+
+
+State 25 conflicts: 1 shift/reduce, 37 reduce/reduce
+State 35 conflicts: 2 shift/reduce
+State 131 conflicts: 16 reduce/reduce
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: SimpleDeclaration
+    2        | RoutineDeclaration
+    3        | Program SimpleDeclaration
+    4        | Program RoutineDeclaration
+
+    5 SimpleDeclaration: VariableDeclaration SemicolonOrNothing
+    6                  | TypeDeclaration SemicolonOrNothing
+
+    7 SemicolonOrNothing: %empty
+    8                   | SEMICOLON
+
+    9 VariableDeclaration: VAR IDENTIFIER COLON Type
+   10                    | VAR IDENTIFIER COLON Type IS Expression
+   11                    | VAR IDENTIFIER IS Expression
+
+   12 TypeDeclaration: TYPE IDENTIFIER IS Type
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET IS Body END SemicolonOrNothing
+   14                   | ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body RETURN Expression END SemicolonOrNothing
+
+   15 Parameters: ParameterDeclaration
+   16           | Parameters COMMA ParameterDeclaration
+
+   17 ParameterDeclaration: IDENTIFIER COLON Type
+
+   18 Type: PrimitiveType
+   19     | RecordType
+   20     | ArrayType
+   21     | IDENTIFIER
+
+   22 PrimitiveType: INTEGER
+   23              | REAL
+   24              | BOOLEAN
+
+   25 RecordType: RECORD MultipleVariableDeclaration END
+
+   26 MultipleVariableDeclaration: VariableDeclaration
+   27                            | MultipleVariableDeclaration VariableDeclaration
+
+   28 ArrayType: ARRAY LPAREN RPAREN Type
+   29          | ARRAY LPAREN Expression RPAREN Type
+
+   30 Body: Statement
+   31     | SimpleDeclaration
+   32     | RETURN Expression
+   33     | Body Statement
+   34     | Body SimpleDeclaration
+   35     | Body Expression
+
+   36 Statement: Assignment
+   37          | RoutineCall
+   38          | WhileLoop
+   39          | ForLoop
+   40          | IfStatement
+
+   41 Assignment: ModifiablePrimary ASSIGN Expression
+
+   42 RoutineCall: IDENTIFIER
+   43            | IDENTIFIER LBRACKET ExpressionList RBRACKET
+
+   44 ExpressionList: Expression
+   45               | ExpressionList COMMA Expression
+
+   46 WhileLoop: WHILE Expression LOOP Body END
+
+   47 ForLoop: FOR IDENTIFIER Range LOOP Body END
+
+   48 Range: IN Expression RANGE Expression
+   49      | IN REVERSE Expression RANGE Expression
+
+   50 IfStatement: IF Expression THEN Body END
+   51            | IF Expression THEN Body ELSE Body END
+
+   52 Expression: Relation
+   53           | Relation OR Expression
+   54           | Relation AND Expression
+   55           | Relation XOR Expression
+
+   56 Relation: Simple
+   57         | Simple RelationOperand Simple
+
+   58 RelationOperand: EQUALS
+   59                | NOT_EQUAL
+   60                | LESS_THAN
+   61                | LESS_THAN_EQUAL
+   62                | GREATER_THAN
+   63                | GREATER_THAN_EQUAL
+
+   64 Simple: Factor
+   65       | Factor MULTIPLY Simple
+   66       | Factor DIVIDE Simple
+   67       | Factor MODULO Simple
+
+   68 Factor: Summand
+   69       | Summand Sign Factor
+
+   70 Summand: Primary
+   71        | LBRACKET Expression RBRACKET
+
+   72 Primary: INTEGER_LITERAL
+   73        | Sign INTEGER_LITERAL
+   74        | NOT INTEGER_LITERAL
+   75        | REAL_LITERAL
+   76        | Sign REAL_LITERAL
+   77        | BOOLEAN_LITERAL
+   78        | ModifiablePrimary
+   79        | RoutineCall
+
+   80 Sign: PLUS
+   81     | MINUS
+
+   82 ModifiablePrimary: IDENTIFIER
+   83                  | ModifiablePrimary DOT IDENTIFIER
+   84                  | ModifiablePrimary LPAREN Expression RPAREN
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    INVALID_CHARACTER (258)
+    INTEGER (259) 22
+    REAL (260) 23
+    RETURN (261) 14 32
+    THEN (262) 50 51
+    SEMICOLON (263) 8
+    NEWLINE (264)
+    INTEGER_LITERAL (265) 72 73 74
+    BOOLEAN_LITERAL (266) 77
+    REAL_LITERAL (267) 75 76
+    IDENTIFIER (268) 9 10 11 12 13 14 17 21 42 43 47 82 83
+    BOOLEAN (269) 24
+    RANGE (270) 48 49
+    WHILE (271) 46
+    FOR (272) 47
+    IF (273) 50 51
+    ELSE (274) 51
+    VAR (275) 9 10 11
+    TYPE (276) 12
+    ROUTINE (277) 13 14
+    END (278) 13 14 25 46 47 50 51
+    RECORD (279) 25
+    ARRAY (280) 28 29
+    IN (281) 48 49
+    REVERSE (282) 49
+    LOOP (283) 46 47
+    IS (284) 10 11 12 13 14
+    AND (285) 54
+    OR (286) 53
+    XOR (287) 55
+    NOT (288) 74
+    ASSIGN (289) 41
+    COLON (290) 9 10 14 17
+    COMMA (291) 16 45
+    DOT (292) 83
+    LBRACKET (293) 13 14 43 71
+    RBRACKET (294) 13 14 43 71
+    LPAREN (295) 28 29 84
+    RPAREN (296) 28 29 84
+    EQUALS (297) 58
+    EQUAL (298)
+    NOT_EQUAL (299) 59
+    LESS_THAN (300) 60
+    LESS_THAN_EQUAL (301) 61
+    GREATER_THAN (302) 62
+    GREATER_THAN_EQUAL (303) 63
+    PLUS (304) 80
+    MINUS (305) 81
+    MULTIPLY (306) 65
+    DIVIDE (307) 66
+    MODULO (308) 67
+
+
+Nonterminals, with rules where they appear
+
+    $accept (54)
+        on left: 0
+    Program (55)
+        on left: 1 2 3 4
+        on right: 0 3 4
+    SimpleDeclaration (56)
+        on left: 5 6
+        on right: 1 3 31 34
+    SemicolonOrNothing (57)
+        on left: 7 8
+        on right: 5 6 13 14
+    VariableDeclaration (58)
+        on left: 9 10 11
+        on right: 5 26 27
+    TypeDeclaration (59)
+        on left: 12
+        on right: 6
+    RoutineDeclaration (60)
+        on left: 13 14
+        on right: 2 4
+    Parameters (61)
+        on left: 15 16
+        on right: 13 14 16
+    ParameterDeclaration (62)
+        on left: 17
+        on right: 15 16
+    Type (63)
+        on left: 18 19 20 21
+        on right: 9 10 12 14 17 28 29
+    PrimitiveType (64)
+        on left: 22 23 24
+        on right: 18
+    RecordType (65)
+        on left: 25
+        on right: 19
+    MultipleVariableDeclaration (66)
+        on left: 26 27
+        on right: 25 27
+    ArrayType (67)
+        on left: 28 29
+        on right: 20
+    Body (68)
+        on left: 30 31 32 33 34 35
+        on right: 13 14 33 34 35 46 47 50 51
+    Statement (69)
+        on left: 36 37 38 39 40
+        on right: 30 33
+    Assignment (70)
+        on left: 41
+        on right: 36
+    RoutineCall (71)
+        on left: 42 43
+        on right: 37 79
+    ExpressionList (72)
+        on left: 44 45
+        on right: 43 45
+    WhileLoop (73)
+        on left: 46
+        on right: 38
+    ForLoop (74)
+        on left: 47
+        on right: 39
+    Range (75)
+        on left: 48 49
+        on right: 47
+    IfStatement (76)
+        on left: 50 51
+        on right: 40
+    Expression (77)
+        on left: 52 53 54 55
+        on right: 10 11 14 29 32 35 41 44 45 46 48 49 50 51 53 54 55 71 84
+    Relation (78)
+        on left: 56 57
+        on right: 52 53 54 55
+    RelationOperand (79)
+        on left: 58 59 60 61 62 63
+        on right: 57
+    Simple (80)
+        on left: 64 65 66 67
+        on right: 56 57 65 66 67
+    Factor (81)
+        on left: 68 69
+        on right: 64 65 66 67 69
+    Summand (82)
+        on left: 70 71
+        on right: 68 69
+    Primary (83)
+        on left: 72 73 74 75 76 77 78 79
+        on right: 70
+    Sign (84)
+        on left: 80 81
+        on right: 69 73 76
+    ModifiablePrimary (85)
+        on left: 82 83 84
+        on right: 41 78 83 84
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    VAR      shift, and go to state 1
+    TYPE     shift, and go to state 2
+    ROUTINE  shift, and go to state 3
+
+    Program              go to state 4
+    SimpleDeclaration    go to state 5
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    RoutineDeclaration   go to state 8
+
+
+State 1
+
+    9 VariableDeclaration: VAR . IDENTIFIER COLON Type
+   10                    | VAR . IDENTIFIER COLON Type IS Expression
+   11                    | VAR . IDENTIFIER IS Expression
+
+    IDENTIFIER  shift, and go to state 9
+
+
+State 2
+
+   12 TypeDeclaration: TYPE . IDENTIFIER IS Type
+
+    IDENTIFIER  shift, and go to state 10
+
+
+State 3
+
+   13 RoutineDeclaration: ROUTINE . IDENTIFIER LBRACKET Parameters RBRACKET IS Body END SemicolonOrNothing
+   14                   | ROUTINE . IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body RETURN Expression END SemicolonOrNothing
+
+    IDENTIFIER  shift, and go to state 11
+
+
+State 4
+
+    0 $accept: Program . $end
+    3 Program: Program . SimpleDeclaration
+    4        | Program . RoutineDeclaration
+
+    $end     shift, and go to state 12
+    VAR      shift, and go to state 1
+    TYPE     shift, and go to state 2
+    ROUTINE  shift, and go to state 3
+
+    SimpleDeclaration    go to state 13
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    RoutineDeclaration   go to state 14
+
+
+State 5
+
+    1 Program: SimpleDeclaration .
+
+    $default  reduce using rule 1 (Program)
+
+
+State 6
+
+    5 SimpleDeclaration: VariableDeclaration . SemicolonOrNothing
+
+    SEMICOLON  shift, and go to state 15
+
+    $default  reduce using rule 7 (SemicolonOrNothing)
+
+    SemicolonOrNothing  go to state 16
+
+
+State 7
+
+    6 SimpleDeclaration: TypeDeclaration . SemicolonOrNothing
+
+    SEMICOLON  shift, and go to state 15
+
+    $default  reduce using rule 7 (SemicolonOrNothing)
+
+    SemicolonOrNothing  go to state 17
+
+
+State 8
+
+    2 Program: RoutineDeclaration .
+
+    $default  reduce using rule 2 (Program)
+
+
+State 9
+
+    9 VariableDeclaration: VAR IDENTIFIER . COLON Type
+   10                    | VAR IDENTIFIER . COLON Type IS Expression
+   11                    | VAR IDENTIFIER . IS Expression
+
+    IS     shift, and go to state 18
+    COLON  shift, and go to state 19
+
+
+State 10
+
+   12 TypeDeclaration: TYPE IDENTIFIER . IS Type
+
+    IS  shift, and go to state 20
+
+
+State 11
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER . LBRACKET Parameters RBRACKET IS Body END SemicolonOrNothing
+   14                   | ROUTINE IDENTIFIER . LBRACKET Parameters RBRACKET COLON Type IS Body RETURN Expression END SemicolonOrNothing
+
+    LBRACKET  shift, and go to state 21
+
+
+State 12
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 13
+
+    3 Program: Program SimpleDeclaration .
+
+    $default  reduce using rule 3 (Program)
+
+
+State 14
+
+    4 Program: Program RoutineDeclaration .
+
+    $default  reduce using rule 4 (Program)
+
+
+State 15
+
+    8 SemicolonOrNothing: SEMICOLON .
+
+    $default  reduce using rule 8 (SemicolonOrNothing)
+
+
+State 16
+
+    5 SimpleDeclaration: VariableDeclaration SemicolonOrNothing .
+
+    $default  reduce using rule 5 (SimpleDeclaration)
+
+
+State 17
+
+    6 SimpleDeclaration: TypeDeclaration SemicolonOrNothing .
+
+    $default  reduce using rule 6 (SimpleDeclaration)
+
+
+State 18
+
+   11 VariableDeclaration: VAR IDENTIFIER IS . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 31
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 19
+
+    9 VariableDeclaration: VAR IDENTIFIER COLON . Type
+   10                    | VAR IDENTIFIER COLON . Type IS Expression
+
+    INTEGER     shift, and go to state 39
+    REAL        shift, and go to state 40
+    IDENTIFIER  shift, and go to state 41
+    BOOLEAN     shift, and go to state 42
+    RECORD      shift, and go to state 43
+    ARRAY       shift, and go to state 44
+
+    Type           go to state 45
+    PrimitiveType  go to state 46
+    RecordType     go to state 47
+    ArrayType      go to state 48
+
+
+State 20
+
+   12 TypeDeclaration: TYPE IDENTIFIER IS . Type
+
+    INTEGER     shift, and go to state 39
+    REAL        shift, and go to state 40
+    IDENTIFIER  shift, and go to state 41
+    BOOLEAN     shift, and go to state 42
+    RECORD      shift, and go to state 43
+    ARRAY       shift, and go to state 44
+
+    Type           go to state 49
+    PrimitiveType  go to state 46
+    RecordType     go to state 47
+    ArrayType      go to state 48
+
+
+State 21
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET . Parameters RBRACKET IS Body END SemicolonOrNothing
+   14                   | ROUTINE IDENTIFIER LBRACKET . Parameters RBRACKET COLON Type IS Body RETURN Expression END SemicolonOrNothing
+
+    IDENTIFIER  shift, and go to state 50
+
+    Parameters            go to state 51
+    ParameterDeclaration  go to state 52
+
+
+State 22
+
+   72 Primary: INTEGER_LITERAL .
+
+    $default  reduce using rule 72 (Primary)
+
+
+State 23
+
+   77 Primary: BOOLEAN_LITERAL .
+
+    $default  reduce using rule 77 (Primary)
+
+
+State 24
+
+   75 Primary: REAL_LITERAL .
+
+    $default  reduce using rule 75 (Primary)
+
+
+State 25
+
+   42 RoutineCall: IDENTIFIER .
+   43            | IDENTIFIER . LBRACKET ExpressionList RBRACKET
+   82 ModifiablePrimary: IDENTIFIER .
+
+    LBRACKET  shift, and go to state 53
+
+    $end                reduce using rule 42 (RoutineCall)
+    $end                [reduce using rule 82 (ModifiablePrimary)]
+    RETURN              reduce using rule 42 (RoutineCall)
+    RETURN              [reduce using rule 82 (ModifiablePrimary)]
+    THEN                reduce using rule 42 (RoutineCall)
+    THEN                [reduce using rule 82 (ModifiablePrimary)]
+    SEMICOLON           reduce using rule 42 (RoutineCall)
+    SEMICOLON           [reduce using rule 82 (ModifiablePrimary)]
+    INTEGER_LITERAL     reduce using rule 42 (RoutineCall)
+    INTEGER_LITERAL     [reduce using rule 82 (ModifiablePrimary)]
+    BOOLEAN_LITERAL     reduce using rule 42 (RoutineCall)
+    BOOLEAN_LITERAL     [reduce using rule 82 (ModifiablePrimary)]
+    REAL_LITERAL        reduce using rule 42 (RoutineCall)
+    REAL_LITERAL        [reduce using rule 82 (ModifiablePrimary)]
+    IDENTIFIER          reduce using rule 42 (RoutineCall)
+    IDENTIFIER          [reduce using rule 82 (ModifiablePrimary)]
+    RANGE               reduce using rule 42 (RoutineCall)
+    RANGE               [reduce using rule 82 (ModifiablePrimary)]
+    WHILE               reduce using rule 42 (RoutineCall)
+    WHILE               [reduce using rule 82 (ModifiablePrimary)]
+    FOR                 reduce using rule 42 (RoutineCall)
+    FOR                 [reduce using rule 82 (ModifiablePrimary)]
+    IF                  reduce using rule 42 (RoutineCall)
+    IF                  [reduce using rule 82 (ModifiablePrimary)]
+    ELSE                reduce using rule 42 (RoutineCall)
+    ELSE                [reduce using rule 82 (ModifiablePrimary)]
+    VAR                 reduce using rule 42 (RoutineCall)
+    VAR                 [reduce using rule 82 (ModifiablePrimary)]
+    TYPE                reduce using rule 42 (RoutineCall)
+    TYPE                [reduce using rule 82 (ModifiablePrimary)]
+    ROUTINE             reduce using rule 42 (RoutineCall)
+    ROUTINE             [reduce using rule 82 (ModifiablePrimary)]
+    END                 reduce using rule 42 (RoutineCall)
+    END                 [reduce using rule 82 (ModifiablePrimary)]
+    LOOP                reduce using rule 42 (RoutineCall)
+    LOOP                [reduce using rule 82 (ModifiablePrimary)]
+    AND                 reduce using rule 42 (RoutineCall)
+    AND                 [reduce using rule 82 (ModifiablePrimary)]
+    OR                  reduce using rule 42 (RoutineCall)
+    OR                  [reduce using rule 82 (ModifiablePrimary)]
+    XOR                 reduce using rule 42 (RoutineCall)
+    XOR                 [reduce using rule 82 (ModifiablePrimary)]
+    NOT                 reduce using rule 42 (RoutineCall)
+    NOT                 [reduce using rule 82 (ModifiablePrimary)]
+    ASSIGN              reduce using rule 82 (ModifiablePrimary)
+    COMMA               reduce using rule 42 (RoutineCall)
+    COMMA               [reduce using rule 82 (ModifiablePrimary)]
+    DOT                 reduce using rule 82 (ModifiablePrimary)
+    LBRACKET            [reduce using rule 42 (RoutineCall)]
+    LBRACKET            [reduce using rule 82 (ModifiablePrimary)]
+    RBRACKET            reduce using rule 42 (RoutineCall)
+    RBRACKET            [reduce using rule 82 (ModifiablePrimary)]
+    LPAREN              reduce using rule 82 (ModifiablePrimary)
+    RPAREN              reduce using rule 42 (RoutineCall)
+    RPAREN              [reduce using rule 82 (ModifiablePrimary)]
+    EQUALS              reduce using rule 42 (RoutineCall)
+    EQUALS              [reduce using rule 82 (ModifiablePrimary)]
+    NOT_EQUAL           reduce using rule 42 (RoutineCall)
+    NOT_EQUAL           [reduce using rule 82 (ModifiablePrimary)]
+    LESS_THAN           reduce using rule 42 (RoutineCall)
+    LESS_THAN           [reduce using rule 82 (ModifiablePrimary)]
+    LESS_THAN_EQUAL     reduce using rule 42 (RoutineCall)
+    LESS_THAN_EQUAL     [reduce using rule 82 (ModifiablePrimary)]
+    GREATER_THAN        reduce using rule 42 (RoutineCall)
+    GREATER_THAN        [reduce using rule 82 (ModifiablePrimary)]
+    GREATER_THAN_EQUAL  reduce using rule 42 (RoutineCall)
+    GREATER_THAN_EQUAL  [reduce using rule 82 (ModifiablePrimary)]
+    PLUS                reduce using rule 42 (RoutineCall)
+    PLUS                [reduce using rule 82 (ModifiablePrimary)]
+    MINUS               reduce using rule 42 (RoutineCall)
+    MINUS               [reduce using rule 82 (ModifiablePrimary)]
+    MULTIPLY            reduce using rule 42 (RoutineCall)
+    MULTIPLY            [reduce using rule 82 (ModifiablePrimary)]
+    DIVIDE              reduce using rule 42 (RoutineCall)
+    DIVIDE              [reduce using rule 82 (ModifiablePrimary)]
+    MODULO              reduce using rule 42 (RoutineCall)
+    MODULO              [reduce using rule 82 (ModifiablePrimary)]
+    $default            reduce using rule 42 (RoutineCall)
+
+
+State 26
+
+   74 Primary: NOT . INTEGER_LITERAL
+
+    INTEGER_LITERAL  shift, and go to state 54
+
+
+State 27
+
+   71 Summand: LBRACKET . Expression RBRACKET
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 55
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 28
+
+   80 Sign: PLUS .
+
+    $default  reduce using rule 80 (Sign)
+
+
+State 29
+
+   81 Sign: MINUS .
+
+    $default  reduce using rule 81 (Sign)
+
+
+State 30
+
+   79 Primary: RoutineCall .
+
+    $default  reduce using rule 79 (Primary)
+
+
+State 31
+
+   11 VariableDeclaration: VAR IDENTIFIER IS Expression .
+
+    $default  reduce using rule 11 (VariableDeclaration)
+
+
+State 32
+
+   52 Expression: Relation .
+   53           | Relation . OR Expression
+   54           | Relation . AND Expression
+   55           | Relation . XOR Expression
+
+    AND  shift, and go to state 56
+    OR   shift, and go to state 57
+    XOR  shift, and go to state 58
+
+    $default  reduce using rule 52 (Expression)
+
+
+State 33
+
+   56 Relation: Simple .
+   57         | Simple . RelationOperand Simple
+
+    EQUALS              shift, and go to state 59
+    NOT_EQUAL           shift, and go to state 60
+    LESS_THAN           shift, and go to state 61
+    LESS_THAN_EQUAL     shift, and go to state 62
+    GREATER_THAN        shift, and go to state 63
+    GREATER_THAN_EQUAL  shift, and go to state 64
+
+    $default  reduce using rule 56 (Relation)
+
+    RelationOperand  go to state 65
+
+
+State 34
+
+   64 Simple: Factor .
+   65       | Factor . MULTIPLY Simple
+   66       | Factor . DIVIDE Simple
+   67       | Factor . MODULO Simple
+
+    MULTIPLY  shift, and go to state 66
+    DIVIDE    shift, and go to state 67
+    MODULO    shift, and go to state 68
+
+    $default  reduce using rule 64 (Simple)
+
+
+State 35
+
+   68 Factor: Summand .
+   69       | Summand . Sign Factor
+
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
+
+    PLUS      [reduce using rule 68 (Factor)]
+    MINUS     [reduce using rule 68 (Factor)]
+    $default  reduce using rule 68 (Factor)
+
+    Sign  go to state 69
+
+
+State 36
+
+   70 Summand: Primary .
+
+    $default  reduce using rule 70 (Summand)
+
+
+State 37
+
+   73 Primary: Sign . INTEGER_LITERAL
+   76        | Sign . REAL_LITERAL
+
+    INTEGER_LITERAL  shift, and go to state 70
+    REAL_LITERAL     shift, and go to state 71
+
+
+State 38
+
+   78 Primary: ModifiablePrimary .
+   83 ModifiablePrimary: ModifiablePrimary . DOT IDENTIFIER
+   84                  | ModifiablePrimary . LPAREN Expression RPAREN
+
+    DOT     shift, and go to state 72
+    LPAREN  shift, and go to state 73
+
+    $default  reduce using rule 78 (Primary)
+
+
+State 39
+
+   22 PrimitiveType: INTEGER .
+
+    $default  reduce using rule 22 (PrimitiveType)
+
+
+State 40
+
+   23 PrimitiveType: REAL .
+
+    $default  reduce using rule 23 (PrimitiveType)
+
+
+State 41
+
+   21 Type: IDENTIFIER .
+
+    $default  reduce using rule 21 (Type)
+
+
+State 42
+
+   24 PrimitiveType: BOOLEAN .
+
+    $default  reduce using rule 24 (PrimitiveType)
+
+
+State 43
+
+   25 RecordType: RECORD . MultipleVariableDeclaration END
+
+    VAR  shift, and go to state 1
+
+    VariableDeclaration          go to state 74
+    MultipleVariableDeclaration  go to state 75
+
+
+State 44
+
+   28 ArrayType: ARRAY . LPAREN RPAREN Type
+   29          | ARRAY . LPAREN Expression RPAREN Type
+
+    LPAREN  shift, and go to state 76
+
+
+State 45
+
+    9 VariableDeclaration: VAR IDENTIFIER COLON Type .
+   10                    | VAR IDENTIFIER COLON Type . IS Expression
+
+    IS  shift, and go to state 77
+
+    $default  reduce using rule 9 (VariableDeclaration)
+
+
+State 46
+
+   18 Type: PrimitiveType .
+
+    $default  reduce using rule 18 (Type)
+
+
+State 47
+
+   19 Type: RecordType .
+
+    $default  reduce using rule 19 (Type)
+
+
+State 48
+
+   20 Type: ArrayType .
+
+    $default  reduce using rule 20 (Type)
+
+
+State 49
+
+   12 TypeDeclaration: TYPE IDENTIFIER IS Type .
+
+    $default  reduce using rule 12 (TypeDeclaration)
+
+
+State 50
+
+   17 ParameterDeclaration: IDENTIFIER . COLON Type
+
+    COLON  shift, and go to state 78
+
+
+State 51
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters . RBRACKET IS Body END SemicolonOrNothing
+   14                   | ROUTINE IDENTIFIER LBRACKET Parameters . RBRACKET COLON Type IS Body RETURN Expression END SemicolonOrNothing
+   16 Parameters: Parameters . COMMA ParameterDeclaration
+
+    COMMA     shift, and go to state 79
+    RBRACKET  shift, and go to state 80
+
+
+State 52
+
+   15 Parameters: ParameterDeclaration .
+
+    $default  reduce using rule 15 (Parameters)
+
+
+State 53
+
+   43 RoutineCall: IDENTIFIER LBRACKET . ExpressionList RBRACKET
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    ExpressionList     go to state 81
+    Expression         go to state 82
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 54
+
+   74 Primary: NOT INTEGER_LITERAL .
+
+    $default  reduce using rule 74 (Primary)
+
+
+State 55
+
+   71 Summand: LBRACKET Expression . RBRACKET
+
+    RBRACKET  shift, and go to state 83
+
+
+State 56
+
+   54 Expression: Relation AND . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 84
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 57
+
+   53 Expression: Relation OR . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 85
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 58
+
+   55 Expression: Relation XOR . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 86
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 59
+
+   58 RelationOperand: EQUALS .
+
+    $default  reduce using rule 58 (RelationOperand)
+
+
+State 60
+
+   59 RelationOperand: NOT_EQUAL .
+
+    $default  reduce using rule 59 (RelationOperand)
+
+
+State 61
+
+   60 RelationOperand: LESS_THAN .
+
+    $default  reduce using rule 60 (RelationOperand)
+
+
+State 62
+
+   61 RelationOperand: LESS_THAN_EQUAL .
+
+    $default  reduce using rule 61 (RelationOperand)
+
+
+State 63
+
+   62 RelationOperand: GREATER_THAN .
+
+    $default  reduce using rule 62 (RelationOperand)
+
+
+State 64
+
+   63 RelationOperand: GREATER_THAN_EQUAL .
+
+    $default  reduce using rule 63 (RelationOperand)
+
+
+State 65
+
+   57 Relation: Simple RelationOperand . Simple
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Simple             go to state 87
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 66
+
+   65 Simple: Factor MULTIPLY . Simple
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Simple             go to state 88
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 67
+
+   66 Simple: Factor DIVIDE . Simple
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Simple             go to state 89
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 68
+
+   67 Simple: Factor MODULO . Simple
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Simple             go to state 90
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 69
+
+   69 Factor: Summand Sign . Factor
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Factor             go to state 91
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 70
+
+   73 Primary: Sign INTEGER_LITERAL .
+
+    $default  reduce using rule 73 (Primary)
+
+
+State 71
+
+   76 Primary: Sign REAL_LITERAL .
+
+    $default  reduce using rule 76 (Primary)
+
+
+State 72
+
+   83 ModifiablePrimary: ModifiablePrimary DOT . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 92
+
+
+State 73
+
+   84 ModifiablePrimary: ModifiablePrimary LPAREN . Expression RPAREN
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 93
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 74
+
+   26 MultipleVariableDeclaration: VariableDeclaration .
+
+    $default  reduce using rule 26 (MultipleVariableDeclaration)
+
+
+State 75
+
+   25 RecordType: RECORD MultipleVariableDeclaration . END
+   27 MultipleVariableDeclaration: MultipleVariableDeclaration . VariableDeclaration
+
+    VAR  shift, and go to state 1
+    END  shift, and go to state 94
+
+    VariableDeclaration  go to state 95
+
+
+State 76
+
+   28 ArrayType: ARRAY LPAREN . RPAREN Type
+   29          | ARRAY LPAREN . Expression RPAREN Type
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    RPAREN           shift, and go to state 96
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 97
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 77
+
+   10 VariableDeclaration: VAR IDENTIFIER COLON Type IS . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 98
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 78
+
+   17 ParameterDeclaration: IDENTIFIER COLON . Type
+
+    INTEGER     shift, and go to state 39
+    REAL        shift, and go to state 40
+    IDENTIFIER  shift, and go to state 41
+    BOOLEAN     shift, and go to state 42
+    RECORD      shift, and go to state 43
+    ARRAY       shift, and go to state 44
+
+    Type           go to state 99
+    PrimitiveType  go to state 46
+    RecordType     go to state 47
+    ArrayType      go to state 48
+
+
+State 79
+
+   16 Parameters: Parameters COMMA . ParameterDeclaration
+
+    IDENTIFIER  shift, and go to state 50
+
+    ParameterDeclaration  go to state 100
+
+
+State 80
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET . IS Body END SemicolonOrNothing
+   14                   | ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET . COLON Type IS Body RETURN Expression END SemicolonOrNothing
+
+    IS     shift, and go to state 101
+    COLON  shift, and go to state 102
+
+
+State 81
+
+   43 RoutineCall: IDENTIFIER LBRACKET ExpressionList . RBRACKET
+   45 ExpressionList: ExpressionList . COMMA Expression
+
+    COMMA     shift, and go to state 103
+    RBRACKET  shift, and go to state 104
+
+
+State 82
+
+   44 ExpressionList: Expression .
+
+    $default  reduce using rule 44 (ExpressionList)
+
+
+State 83
+
+   71 Summand: LBRACKET Expression RBRACKET .
+
+    $default  reduce using rule 71 (Summand)
+
+
+State 84
+
+   54 Expression: Relation AND Expression .
+
+    $default  reduce using rule 54 (Expression)
+
+
+State 85
+
+   53 Expression: Relation OR Expression .
+
+    $default  reduce using rule 53 (Expression)
+
+
+State 86
+
+   55 Expression: Relation XOR Expression .
+
+    $default  reduce using rule 55 (Expression)
+
+
+State 87
+
+   57 Relation: Simple RelationOperand Simple .
+
+    $default  reduce using rule 57 (Relation)
+
+
+State 88
+
+   65 Simple: Factor MULTIPLY Simple .
+
+    $default  reduce using rule 65 (Simple)
+
+
+State 89
+
+   66 Simple: Factor DIVIDE Simple .
+
+    $default  reduce using rule 66 (Simple)
+
+
+State 90
+
+   67 Simple: Factor MODULO Simple .
+
+    $default  reduce using rule 67 (Simple)
+
+
+State 91
+
+   69 Factor: Summand Sign Factor .
+
+    $default  reduce using rule 69 (Factor)
+
+
+State 92
+
+   83 ModifiablePrimary: ModifiablePrimary DOT IDENTIFIER .
+
+    $default  reduce using rule 83 (ModifiablePrimary)
+
+
+State 93
+
+   84 ModifiablePrimary: ModifiablePrimary LPAREN Expression . RPAREN
+
+    RPAREN  shift, and go to state 105
+
+
+State 94
+
+   25 RecordType: RECORD MultipleVariableDeclaration END .
+
+    $default  reduce using rule 25 (RecordType)
+
+
+State 95
+
+   27 MultipleVariableDeclaration: MultipleVariableDeclaration VariableDeclaration .
+
+    $default  reduce using rule 27 (MultipleVariableDeclaration)
+
+
+State 96
+
+   28 ArrayType: ARRAY LPAREN RPAREN . Type
+
+    INTEGER     shift, and go to state 39
+    REAL        shift, and go to state 40
+    IDENTIFIER  shift, and go to state 41
+    BOOLEAN     shift, and go to state 42
+    RECORD      shift, and go to state 43
+    ARRAY       shift, and go to state 44
+
+    Type           go to state 106
+    PrimitiveType  go to state 46
+    RecordType     go to state 47
+    ArrayType      go to state 48
+
+
+State 97
+
+   29 ArrayType: ARRAY LPAREN Expression . RPAREN Type
+
+    RPAREN  shift, and go to state 107
+
+
+State 98
+
+   10 VariableDeclaration: VAR IDENTIFIER COLON Type IS Expression .
+
+    $default  reduce using rule 10 (VariableDeclaration)
+
+
+State 99
+
+   17 ParameterDeclaration: IDENTIFIER COLON Type .
+
+    $default  reduce using rule 17 (ParameterDeclaration)
+
+
+State 100
+
+   16 Parameters: Parameters COMMA ParameterDeclaration .
+
+    $default  reduce using rule 16 (Parameters)
+
+
+State 101
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET IS . Body END SemicolonOrNothing
+
+    RETURN      shift, and go to state 108
+    IDENTIFIER  shift, and go to state 25
+    WHILE       shift, and go to state 109
+    FOR         shift, and go to state 110
+    IF          shift, and go to state 111
+    VAR         shift, and go to state 1
+    TYPE        shift, and go to state 2
+
+    SimpleDeclaration    go to state 112
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Body                 go to state 113
+    Statement            go to state 114
+    Assignment           go to state 115
+    RoutineCall          go to state 116
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    ModifiablePrimary    go to state 120
+
+
+State 102
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON . Type IS Body RETURN Expression END SemicolonOrNothing
+
+    INTEGER     shift, and go to state 39
+    REAL        shift, and go to state 40
+    IDENTIFIER  shift, and go to state 41
+    BOOLEAN     shift, and go to state 42
+    RECORD      shift, and go to state 43
+    ARRAY       shift, and go to state 44
+
+    Type           go to state 121
+    PrimitiveType  go to state 46
+    RecordType     go to state 47
+    ArrayType      go to state 48
+
+
+State 103
+
+   45 ExpressionList: ExpressionList COMMA . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 122
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 104
+
+   43 RoutineCall: IDENTIFIER LBRACKET ExpressionList RBRACKET .
+
+    $default  reduce using rule 43 (RoutineCall)
+
+
+State 105
+
+   84 ModifiablePrimary: ModifiablePrimary LPAREN Expression RPAREN .
+
+    $default  reduce using rule 84 (ModifiablePrimary)
+
+
+State 106
+
+   28 ArrayType: ARRAY LPAREN RPAREN Type .
+
+    $default  reduce using rule 28 (ArrayType)
+
+
+State 107
+
+   29 ArrayType: ARRAY LPAREN Expression RPAREN . Type
+
+    INTEGER     shift, and go to state 39
+    REAL        shift, and go to state 40
+    IDENTIFIER  shift, and go to state 41
+    BOOLEAN     shift, and go to state 42
+    RECORD      shift, and go to state 43
+    ARRAY       shift, and go to state 44
+
+    Type           go to state 123
+    PrimitiveType  go to state 46
+    RecordType     go to state 47
+    ArrayType      go to state 48
+
+
+State 108
+
+   32 Body: RETURN . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 124
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 109
+
+   46 WhileLoop: WHILE . Expression LOOP Body END
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 125
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 110
+
+   47 ForLoop: FOR . IDENTIFIER Range LOOP Body END
+
+    IDENTIFIER  shift, and go to state 126
+
+
+State 111
+
+   50 IfStatement: IF . Expression THEN Body END
+   51            | IF . Expression THEN Body ELSE Body END
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 127
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 112
+
+   31 Body: SimpleDeclaration .
+
+    $default  reduce using rule 31 (Body)
+
+
+State 113
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET IS Body . END SemicolonOrNothing
+   33 Body: Body . Statement
+   34     | Body . SimpleDeclaration
+   35     | Body . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    WHILE            shift, and go to state 109
+    FOR              shift, and go to state 110
+    IF               shift, and go to state 111
+    VAR              shift, and go to state 1
+    TYPE             shift, and go to state 2
+    END              shift, and go to state 128
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    SimpleDeclaration    go to state 129
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Statement            go to state 130
+    Assignment           go to state 115
+    RoutineCall          go to state 131
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    Expression           go to state 132
+    Relation             go to state 32
+    Simple               go to state 33
+    Factor               go to state 34
+    Summand              go to state 35
+    Primary              go to state 36
+    Sign                 go to state 37
+    ModifiablePrimary    go to state 133
+
+
+State 114
+
+   30 Body: Statement .
+
+    $default  reduce using rule 30 (Body)
+
+
+State 115
+
+   36 Statement: Assignment .
+
+    $default  reduce using rule 36 (Statement)
+
+
+State 116
+
+   37 Statement: RoutineCall .
+
+    $default  reduce using rule 37 (Statement)
+
+
+State 117
+
+   38 Statement: WhileLoop .
+
+    $default  reduce using rule 38 (Statement)
+
+
+State 118
+
+   39 Statement: ForLoop .
+
+    $default  reduce using rule 39 (Statement)
+
+
+State 119
+
+   40 Statement: IfStatement .
+
+    $default  reduce using rule 40 (Statement)
+
+
+State 120
+
+   41 Assignment: ModifiablePrimary . ASSIGN Expression
+   83 ModifiablePrimary: ModifiablePrimary . DOT IDENTIFIER
+   84                  | ModifiablePrimary . LPAREN Expression RPAREN
+
+    ASSIGN  shift, and go to state 134
+    DOT     shift, and go to state 72
+    LPAREN  shift, and go to state 73
+
+
+State 121
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type . IS Body RETURN Expression END SemicolonOrNothing
+
+    IS  shift, and go to state 135
+
+
+State 122
+
+   45 ExpressionList: ExpressionList COMMA Expression .
+
+    $default  reduce using rule 45 (ExpressionList)
+
+
+State 123
+
+   29 ArrayType: ARRAY LPAREN Expression RPAREN Type .
+
+    $default  reduce using rule 29 (ArrayType)
+
+
+State 124
+
+   32 Body: RETURN Expression .
+
+    $default  reduce using rule 32 (Body)
+
+
+State 125
+
+   46 WhileLoop: WHILE Expression . LOOP Body END
+
+    LOOP  shift, and go to state 136
+
+
+State 126
+
+   47 ForLoop: FOR IDENTIFIER . Range LOOP Body END
+
+    IN  shift, and go to state 137
+
+    Range  go to state 138
+
+
+State 127
+
+   50 IfStatement: IF Expression . THEN Body END
+   51            | IF Expression . THEN Body ELSE Body END
+
+    THEN  shift, and go to state 139
+
+
+State 128
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET IS Body END . SemicolonOrNothing
+
+    SEMICOLON  shift, and go to state 15
+
+    $default  reduce using rule 7 (SemicolonOrNothing)
+
+    SemicolonOrNothing  go to state 140
+
+
+State 129
+
+   34 Body: Body SimpleDeclaration .
+
+    $default  reduce using rule 34 (Body)
+
+
+State 130
+
+   33 Body: Body Statement .
+
+    $default  reduce using rule 33 (Body)
+
+
+State 131
+
+   37 Statement: RoutineCall .
+   79 Primary: RoutineCall .
+
+    RETURN              reduce using rule 37 (Statement)
+    RETURN              [reduce using rule 79 (Primary)]
+    INTEGER_LITERAL     reduce using rule 37 (Statement)
+    INTEGER_LITERAL     [reduce using rule 79 (Primary)]
+    BOOLEAN_LITERAL     reduce using rule 37 (Statement)
+    BOOLEAN_LITERAL     [reduce using rule 79 (Primary)]
+    REAL_LITERAL        reduce using rule 37 (Statement)
+    REAL_LITERAL        [reduce using rule 79 (Primary)]
+    IDENTIFIER          reduce using rule 37 (Statement)
+    IDENTIFIER          [reduce using rule 79 (Primary)]
+    WHILE               reduce using rule 37 (Statement)
+    WHILE               [reduce using rule 79 (Primary)]
+    FOR                 reduce using rule 37 (Statement)
+    FOR                 [reduce using rule 79 (Primary)]
+    IF                  reduce using rule 37 (Statement)
+    IF                  [reduce using rule 79 (Primary)]
+    ELSE                reduce using rule 37 (Statement)
+    ELSE                [reduce using rule 79 (Primary)]
+    VAR                 reduce using rule 37 (Statement)
+    VAR                 [reduce using rule 79 (Primary)]
+    TYPE                reduce using rule 37 (Statement)
+    TYPE                [reduce using rule 79 (Primary)]
+    END                 reduce using rule 37 (Statement)
+    END                 [reduce using rule 79 (Primary)]
+    AND                 reduce using rule 79 (Primary)
+    OR                  reduce using rule 79 (Primary)
+    XOR                 reduce using rule 79 (Primary)
+    NOT                 reduce using rule 37 (Statement)
+    NOT                 [reduce using rule 79 (Primary)]
+    LBRACKET            reduce using rule 37 (Statement)
+    LBRACKET            [reduce using rule 79 (Primary)]
+    EQUALS              reduce using rule 79 (Primary)
+    NOT_EQUAL           reduce using rule 79 (Primary)
+    LESS_THAN           reduce using rule 79 (Primary)
+    LESS_THAN_EQUAL     reduce using rule 79 (Primary)
+    GREATER_THAN        reduce using rule 79 (Primary)
+    GREATER_THAN_EQUAL  reduce using rule 79 (Primary)
+    PLUS                reduce using rule 37 (Statement)
+    PLUS                [reduce using rule 79 (Primary)]
+    MINUS               reduce using rule 37 (Statement)
+    MINUS               [reduce using rule 79 (Primary)]
+    MULTIPLY            reduce using rule 79 (Primary)
+    DIVIDE              reduce using rule 79 (Primary)
+    MODULO              reduce using rule 79 (Primary)
+    $default            reduce using rule 37 (Statement)
+
+
+State 132
+
+   35 Body: Body Expression .
+
+    $default  reduce using rule 35 (Body)
+
+
+State 133
+
+   41 Assignment: ModifiablePrimary . ASSIGN Expression
+   78 Primary: ModifiablePrimary .
+   83 ModifiablePrimary: ModifiablePrimary . DOT IDENTIFIER
+   84                  | ModifiablePrimary . LPAREN Expression RPAREN
+
+    ASSIGN  shift, and go to state 134
+    DOT     shift, and go to state 72
+    LPAREN  shift, and go to state 73
+
+    $default  reduce using rule 78 (Primary)
+
+
+State 134
+
+   41 Assignment: ModifiablePrimary ASSIGN . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 141
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 135
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS . Body RETURN Expression END SemicolonOrNothing
+
+    RETURN      shift, and go to state 108
+    IDENTIFIER  shift, and go to state 25
+    WHILE       shift, and go to state 109
+    FOR         shift, and go to state 110
+    IF          shift, and go to state 111
+    VAR         shift, and go to state 1
+    TYPE        shift, and go to state 2
+
+    SimpleDeclaration    go to state 112
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Body                 go to state 142
+    Statement            go to state 114
+    Assignment           go to state 115
+    RoutineCall          go to state 116
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    ModifiablePrimary    go to state 120
+
+
+State 136
+
+   46 WhileLoop: WHILE Expression LOOP . Body END
+
+    RETURN      shift, and go to state 108
+    IDENTIFIER  shift, and go to state 25
+    WHILE       shift, and go to state 109
+    FOR         shift, and go to state 110
+    IF          shift, and go to state 111
+    VAR         shift, and go to state 1
+    TYPE        shift, and go to state 2
+
+    SimpleDeclaration    go to state 112
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Body                 go to state 143
+    Statement            go to state 114
+    Assignment           go to state 115
+    RoutineCall          go to state 116
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    ModifiablePrimary    go to state 120
+
+
+State 137
+
+   48 Range: IN . Expression RANGE Expression
+   49      | IN . REVERSE Expression RANGE Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    REVERSE          shift, and go to state 144
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 145
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 138
+
+   47 ForLoop: FOR IDENTIFIER Range . LOOP Body END
+
+    LOOP  shift, and go to state 146
+
+
+State 139
+
+   50 IfStatement: IF Expression THEN . Body END
+   51            | IF Expression THEN . Body ELSE Body END
+
+    RETURN      shift, and go to state 108
+    IDENTIFIER  shift, and go to state 25
+    WHILE       shift, and go to state 109
+    FOR         shift, and go to state 110
+    IF          shift, and go to state 111
+    VAR         shift, and go to state 1
+    TYPE        shift, and go to state 2
+
+    SimpleDeclaration    go to state 112
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Body                 go to state 147
+    Statement            go to state 114
+    Assignment           go to state 115
+    RoutineCall          go to state 116
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    ModifiablePrimary    go to state 120
+
+
+State 140
+
+   13 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET IS Body END SemicolonOrNothing .
+
+    $default  reduce using rule 13 (RoutineDeclaration)
+
+
+State 141
+
+   41 Assignment: ModifiablePrimary ASSIGN Expression .
+
+    $default  reduce using rule 41 (Assignment)
+
+
+State 142
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body . RETURN Expression END SemicolonOrNothing
+   33 Body: Body . Statement
+   34     | Body . SimpleDeclaration
+   35     | Body . Expression
+
+    RETURN           shift, and go to state 148
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    WHILE            shift, and go to state 109
+    FOR              shift, and go to state 110
+    IF               shift, and go to state 111
+    VAR              shift, and go to state 1
+    TYPE             shift, and go to state 2
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    SimpleDeclaration    go to state 129
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Statement            go to state 130
+    Assignment           go to state 115
+    RoutineCall          go to state 131
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    Expression           go to state 132
+    Relation             go to state 32
+    Simple               go to state 33
+    Factor               go to state 34
+    Summand              go to state 35
+    Primary              go to state 36
+    Sign                 go to state 37
+    ModifiablePrimary    go to state 133
+
+
+State 143
+
+   33 Body: Body . Statement
+   34     | Body . SimpleDeclaration
+   35     | Body . Expression
+   46 WhileLoop: WHILE Expression LOOP Body . END
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    WHILE            shift, and go to state 109
+    FOR              shift, and go to state 110
+    IF               shift, and go to state 111
+    VAR              shift, and go to state 1
+    TYPE             shift, and go to state 2
+    END              shift, and go to state 149
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    SimpleDeclaration    go to state 129
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Statement            go to state 130
+    Assignment           go to state 115
+    RoutineCall          go to state 131
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    Expression           go to state 132
+    Relation             go to state 32
+    Simple               go to state 33
+    Factor               go to state 34
+    Summand              go to state 35
+    Primary              go to state 36
+    Sign                 go to state 37
+    ModifiablePrimary    go to state 133
+
+
+State 144
+
+   49 Range: IN REVERSE . Expression RANGE Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 150
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 145
+
+   48 Range: IN Expression . RANGE Expression
+
+    RANGE  shift, and go to state 151
+
+
+State 146
+
+   47 ForLoop: FOR IDENTIFIER Range LOOP . Body END
+
+    RETURN      shift, and go to state 108
+    IDENTIFIER  shift, and go to state 25
+    WHILE       shift, and go to state 109
+    FOR         shift, and go to state 110
+    IF          shift, and go to state 111
+    VAR         shift, and go to state 1
+    TYPE        shift, and go to state 2
+
+    SimpleDeclaration    go to state 112
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Body                 go to state 152
+    Statement            go to state 114
+    Assignment           go to state 115
+    RoutineCall          go to state 116
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    ModifiablePrimary    go to state 120
+
+
+State 147
+
+   33 Body: Body . Statement
+   34     | Body . SimpleDeclaration
+   35     | Body . Expression
+   50 IfStatement: IF Expression THEN Body . END
+   51            | IF Expression THEN Body . ELSE Body END
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    WHILE            shift, and go to state 109
+    FOR              shift, and go to state 110
+    IF               shift, and go to state 111
+    ELSE             shift, and go to state 153
+    VAR              shift, and go to state 1
+    TYPE             shift, and go to state 2
+    END              shift, and go to state 154
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    SimpleDeclaration    go to state 129
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Statement            go to state 130
+    Assignment           go to state 115
+    RoutineCall          go to state 131
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    Expression           go to state 132
+    Relation             go to state 32
+    Simple               go to state 33
+    Factor               go to state 34
+    Summand              go to state 35
+    Primary              go to state 36
+    Sign                 go to state 37
+    ModifiablePrimary    go to state 133
+
+
+State 148
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body RETURN . Expression END SemicolonOrNothing
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 155
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 149
+
+   46 WhileLoop: WHILE Expression LOOP Body END .
+
+    $default  reduce using rule 46 (WhileLoop)
+
+
+State 150
+
+   49 Range: IN REVERSE Expression . RANGE Expression
+
+    RANGE  shift, and go to state 156
+
+
+State 151
+
+   48 Range: IN Expression RANGE . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 157
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 152
+
+   33 Body: Body . Statement
+   34     | Body . SimpleDeclaration
+   35     | Body . Expression
+   47 ForLoop: FOR IDENTIFIER Range LOOP Body . END
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    WHILE            shift, and go to state 109
+    FOR              shift, and go to state 110
+    IF               shift, and go to state 111
+    VAR              shift, and go to state 1
+    TYPE             shift, and go to state 2
+    END              shift, and go to state 158
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    SimpleDeclaration    go to state 129
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Statement            go to state 130
+    Assignment           go to state 115
+    RoutineCall          go to state 131
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    Expression           go to state 132
+    Relation             go to state 32
+    Simple               go to state 33
+    Factor               go to state 34
+    Summand              go to state 35
+    Primary              go to state 36
+    Sign                 go to state 37
+    ModifiablePrimary    go to state 133
+
+
+State 153
+
+   51 IfStatement: IF Expression THEN Body ELSE . Body END
+
+    RETURN      shift, and go to state 108
+    IDENTIFIER  shift, and go to state 25
+    WHILE       shift, and go to state 109
+    FOR         shift, and go to state 110
+    IF          shift, and go to state 111
+    VAR         shift, and go to state 1
+    TYPE        shift, and go to state 2
+
+    SimpleDeclaration    go to state 112
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Body                 go to state 159
+    Statement            go to state 114
+    Assignment           go to state 115
+    RoutineCall          go to state 116
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    ModifiablePrimary    go to state 120
+
+
+State 154
+
+   50 IfStatement: IF Expression THEN Body END .
+
+    $default  reduce using rule 50 (IfStatement)
+
+
+State 155
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body RETURN Expression . END SemicolonOrNothing
+
+    END  shift, and go to state 160
+
+
+State 156
+
+   49 Range: IN REVERSE Expression RANGE . Expression
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    RoutineCall        go to state 30
+    Expression         go to state 161
+    Relation           go to state 32
+    Simple             go to state 33
+    Factor             go to state 34
+    Summand            go to state 35
+    Primary            go to state 36
+    Sign               go to state 37
+    ModifiablePrimary  go to state 38
+
+
+State 157
+
+   48 Range: IN Expression RANGE Expression .
+
+    $default  reduce using rule 48 (Range)
+
+
+State 158
+
+   47 ForLoop: FOR IDENTIFIER Range LOOP Body END .
+
+    $default  reduce using rule 47 (ForLoop)
+
+
+State 159
+
+   33 Body: Body . Statement
+   34     | Body . SimpleDeclaration
+   35     | Body . Expression
+   51 IfStatement: IF Expression THEN Body ELSE Body . END
+
+    INTEGER_LITERAL  shift, and go to state 22
+    BOOLEAN_LITERAL  shift, and go to state 23
+    REAL_LITERAL     shift, and go to state 24
+    IDENTIFIER       shift, and go to state 25
+    WHILE            shift, and go to state 109
+    FOR              shift, and go to state 110
+    IF               shift, and go to state 111
+    VAR              shift, and go to state 1
+    TYPE             shift, and go to state 2
+    END              shift, and go to state 162
+    NOT              shift, and go to state 26
+    LBRACKET         shift, and go to state 27
+    PLUS             shift, and go to state 28
+    MINUS            shift, and go to state 29
+
+    SimpleDeclaration    go to state 129
+    VariableDeclaration  go to state 6
+    TypeDeclaration      go to state 7
+    Statement            go to state 130
+    Assignment           go to state 115
+    RoutineCall          go to state 131
+    WhileLoop            go to state 117
+    ForLoop              go to state 118
+    IfStatement          go to state 119
+    Expression           go to state 132
+    Relation             go to state 32
+    Simple               go to state 33
+    Factor               go to state 34
+    Summand              go to state 35
+    Primary              go to state 36
+    Sign                 go to state 37
+    ModifiablePrimary    go to state 133
+
+
+State 160
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body RETURN Expression END . SemicolonOrNothing
+
+    SEMICOLON  shift, and go to state 15
+
+    $default  reduce using rule 7 (SemicolonOrNothing)
+
+    SemicolonOrNothing  go to state 163
+
+
+State 161
+
+   49 Range: IN REVERSE Expression RANGE Expression .
+
+    $default  reduce using rule 49 (Range)
+
+
+State 162
+
+   51 IfStatement: IF Expression THEN Body ELSE Body END .
+
+    $default  reduce using rule 51 (IfStatement)
+
+
+State 163
+
+   14 RoutineDeclaration: ROUTINE IDENTIFIER LBRACKET Parameters RBRACKET COLON Type IS Body RETURN Expression END SemicolonOrNothing .
+
+    $default  reduce using rule 14 (RoutineDeclaration)
