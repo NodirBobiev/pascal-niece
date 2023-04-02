@@ -6,31 +6,6 @@
 #include "lexer.hpp"
 using namespace std;
 
-struct ASTNode {
-    std::string type;
-    std::vector<ASTNode*> children;
-    std::string value;
-};
-
-ASTNode* makeNode(std::string type, std::string value) {
-    ASTNode* node = new ASTNode;
-    node->type = type;
-    node->value = value;
-    return node;
-}
-
-void printAST(ASTNode* node, int level = 0) {
-    // print the current node
-    std::cout << std::string(level, ' ') << "- " << node->type << " : " << node->value << std::endl;
-
-    // recursively print the children nodes
-    for (ASTNode* child : node->children) {
-        printAST(child, level + 2);
-    }
-}
-
-std::vector<ASTNode*> ASTNODES;
-
 void yyerror(const char* msg, ...) {
     std::cerr << "Syntax error at line " << yylineno << ": " << msg << std::endl;
 }

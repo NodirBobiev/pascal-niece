@@ -9,3 +9,5 @@ flex -o lexer.h lexer.l && bison -d parser.y && gcc -o program parser.tab.c lexe
 bison -d parser.y 
 flex lexer.l
 g++ -o my_parser parser.tab.c lex.yy.c
+
+bison -d -v -o parser.cpp parser.y && flex --header-file=lexer.hpp -o lexer.cpp lexer.l && g++ lexer.cpp parser.cpp -o program && ./program
